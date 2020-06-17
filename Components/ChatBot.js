@@ -1,28 +1,75 @@
-import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import Header from './Typography/Header'
+import React, {useState, useEffect, useRef} from 'react'
+import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
+import { Header } from './Typography'
 import BotMessage from './BotMessage'
 import UserButtons from './UserButtons'
+import UserMessage from './UserMessage'
+import LottieView from 'lottie-react-native'
 
-const ChatBot = ({headerText}) => {
+const ChatBot = () => {
 
     const [isUserActive, setIsUserActive] = useState(false);
+    const [userResponse, setUserResponse] = useState(null);
+    const [userResponseTwo, setUserResponseTwo] = useState(null);
+    const [isButtonActive, setIsButtonActive] = useState('none');
+
+    const Scroller = useRef(null)
 
     useEffect(() => {
         setIsUserActive(true);
     },[])
 
+    useEffect(() => {
+        setTimeout(() => setIsButtonActive('flex'), 5000)
+    },[])
+
+    const handlePressNo = () => {
+        setUserResponse(false)
+        setIsButtonActive('none')
+    }
+
+    const handlePressYes = () => {
+        setUserResponse(true)
+        setIsButtonActive('none')
+    }
+
+    const handlePressNoTwo = () => {
+        setUserResponseTwo(false)
+        setIsButtonActive('none')
+    }
+
+    const handlePressYesTwo = () => {
+        setUserResponseTwo(true)
+        setIsButtonActive('none')
+    }
+
     return (
         <View style={styles.Page}>
             <View style={styles.HeaderContainer}>
-                <Header headerText={headerText} />
+                <Header headerText={'Chat-Bot'} />
+                <LottieView source={require('../assets/chat.json')} autoPlay loop style={{height: 100}}/>
             </View> 
-            <ScrollView style={styles.ChatBox}>
-                {isUserActive && <BotMessage messageText={'Hello!'}/>}
-                {isUserActive && <BotMessage messageText={'My name is Jacky.'} />}
-                {isUserActive && <BotMessage messageText={'Are you interested in my advice?'} />}
-                {isUserActive && <UserButtons />}
+            <ScrollView style={styles.ChatBox} contentContainerStyle={{minHeight: 550}} ref={Scroller} onContentSizeChange={(contentWidth, contentHeight) => {
+                Scroller.current.scrollToEnd({animated: true})
+            }}>
+                {isUserActive && <BotMessage messageText={'Hello!'} fadeDelay={1000} />}
+                {isUserActive && <BotMessage messageText={'My name is Jacky.'}  fadeDelay={2500}/>}
+                {isUserActive && <BotMessage messageText={'Do you wanna hear a joke?'} fadeDelay={4000}/>}
+                {userResponse===false && <UserMessage messageText={'No'} fadeDelay={0}/>}
+                {userResponse && <UserMessage messageText={'Yes'} fadeDelay={500}/>}
+                {userResponse && <BotMessage messageText={'Knock knock'} fadeDelay={1500}/>}
+                {userResponse && <UserMessage messageText={"Who's there?"} fadeDelay={2500}/>}
+                {userResponse && <BotMessage messageText={'Tank'} fadeDelay={4000}/>}
+                {userResponse && <UserMessage messageText={"Tank who?"} fadeDelay={5500}/>}
+                {userResponse && <BotMessage messageText={"Your'e welcome"} fadeDelay={7000}/>}
+                {userResponse && <BotMessage messageText={"Did you like my joke?"} fadeDelay={8500}/>}
+                {userResponseTwo && <BotMessage messageText={"Yayyyy"} fadeDelay={1500}/>}
+                {userResponse===false && <BotMessage messageText={'Oh man :('} fadeDelay={1500}/>}
             </ScrollView>
+            <View>
+                {isUserActive && <UserButtons fadeDelay={0} handlePressNo={handlePressNo} handlePressYes={handlePressYes} isButtonActive={isButtonActive}/>}
+                {userResponse && <UserButtons fadeDelay={0} handlePressNo={handlePressNoTwo} handlePressYes={handlePressYesTwo} isButtonActive={isButtonActive}/>}
+            </View>
         </View>
     )
 }
@@ -33,16 +80,18 @@ const styles = StyleSheet.create({
     Page: {
         width: '100%',
         height: '100%',
+        flex: 1
     },
     HeaderContainer: {
-        backgroundColor: 'turquoise',
+        flexDirection: 'row',
+        backgroundColor: '#ff6655',
         width: '100%',
         height: '30%',
-        paddingTop: 60,
-        paddingLeft: 50
+        paddingTop: 50,
+        paddingLeft: 35
     },
     ChatBox: {
-        padding: 20
+        padding: 20,
     },
     UserMessage: {
         backgroundColor: '#47cccf',

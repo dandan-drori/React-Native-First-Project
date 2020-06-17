@@ -1,20 +1,48 @@
-import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import React, {useEffect, useRef} from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native'
+import { Button } from 'react-native-material-ui'
 
-const UserButtons = () => {
+const UserButtons = ({ fadeDelay, handlePressNo, handlePressYes, isButtonActive }) => {
+
+    const fadeAnimScale = useRef(new Animated.Value(0)).current;
+    const fadeAnimOpacity = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.parallel([
+            Animated.timing(
+                fadeAnimScale,
+                {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                    delay: fadeDelay,
+                }
+            ),
+            Animated.timing(
+                fadeAnimOpacity,
+                {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                    delay: fadeDelay,
+                }
+            )
+        ]).start()
+    }, [])
+
+    const onPressYes = () => {
+        handlePressYes()
+    }
+
+    const onPressNo = () => {
+        handlePressNo()
+    }
+
     return (
-        <View style={styles.ButtonsContainer}>
-            <TouchableOpacity style={styles.UserButton}>
-                <Text style={styles.UserButtonText}>
-                    Yes
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.UserButton}>
-                <Text style={styles.UserButtonText}>
-                    No
-                </Text>
-            </TouchableOpacity>
-        </View>
+        <Animated.View style={{...styles.ButtonsContainer, opacity: fadeAnimOpacity, transform: [{scale: fadeAnimScale}], display: isButtonActive}}>
+            <Button accent raised text="yes" style={{container: {...styles.UserButton, display: isButtonActive}}} onPress={onPressYes}/>
+            <Button accent raised text="no" style={{container: {...styles.UserButton, display: isButtonActive}}} onPress={onPressNo}/>
+        </Animated.View>
     )
 }
 
@@ -22,20 +50,17 @@ export default UserButtons
 
 const styles = StyleSheet.create({
     UserButton: {
-        borderRadius: 25,
-        maxWidth: 50,
-        minWidth: 50,
-        alignItems: 'center',
+        maxWidth: 150,
+        minWidth: 150,
         paddingVertical: 10,
         paddingHorizontal: 5,
         marginHorizontal: 5,
-        backgroundColor: '#00ccff'
-    },
-    UserButtonText: {
-        fontSize: 20
     },
     ButtonsContainer: {
         flexDirection: 'row',
-        marginLeft: 255
+        position: 'absolute',
+        bottom: 30,
+        left: 25,
+        justifyContent: 'space-around',
     }
 })

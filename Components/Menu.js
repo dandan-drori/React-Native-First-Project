@@ -10,7 +10,8 @@ const NavMenu = ({ isOpen, handleClick }) => {
                 data={[
                     {key: 'Home', link: '/'},
                     {key: 'About', link: '/about'},
-                    {key: 'ChatBot', link: '/chat-bot'}
+                    {key: 'ChatBot', link: '/chat-bot'},
+                    {key: 'Store', link: '/store'}
                 ]}
             renderItem={({item}) => <Link to={item.link} onPress={handleClick}>
                     <Text style={styles.ListItem}>{item.key}</Text>
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     ListItem: {
         color: '#fff',
         marginBottom: 15,
-        fontSize: 30
+        fontSize: 30,
+        textAlign: 'center'
     }
 })
