@@ -14,7 +14,7 @@ const StoreCard = ({ name, price, image, stars, addToCart }) => {
             <View style={styles.TextSection}>
                 <View>
                     <Text style={styles.Text}>{name}</Text>
-                    <Text style={styles.Text}>{price}</Text>
+                    <Text style={styles.Text}>{price+'$'}</Text>
                 </View>
                 <View style={styles.StarsContainer}>
                     {
@@ -77,7 +77,7 @@ const StoreCard = ({ name, price, image, stars, addToCart }) => {
                         </Text>
                     </View>
                     }
-                    <Button accent raised text="Buy Now" style={{container: styles.BuyButton}} onPress={() => navigation.navigate('ItemPage', {image: image, name: name, price: price, stars: stars})} />
+                    <Button accent raised text="Buy Now" style={{container: styles.BuyButton}} onPress={() => navigation.navigate('ItemPage', {image: image, name: name, price: price, stars: stars, addToCart: addToCart })} />
                 </View>
             </View>
         </View>
@@ -89,14 +89,26 @@ export default StoreCard
 const styles = StyleSheet.create({
     CardsContainer: {
         width: '100%',
-        borderWidth: 1,
-        borderColor: 'black',
-        marginVertical: 10,
+        marginVertical: 20,
+        borderRadius: 50,
+        paddingBottom: 15,
+        backgroundColor: '#fff',
+        // set shadow for android
+        elevation: 5,
+        // set shadow for IOS
+        shadowColor: "#000",
+        shadowOpacity: 0.8,
+        shadowRadius: 5,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
     },
     Image: {
-        height: 300,
+        height: 225,
         width: '100%',
         backgroundColor: 'blue',
+        borderRadius: 50
     },
     TextSection: {
         padding: 0,

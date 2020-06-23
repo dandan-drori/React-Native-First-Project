@@ -1,7 +1,6 @@
 import React from 'react'
 import Home from './Home'
 import ChatBot from './ChatBot'
-import Store from './Store'
 import { StoreStackScreen } from './Store'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,15 +9,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
-
-    // menu logic:
-    // const [isOpen, setIsOpen] = useState(false);
-    // const handleNavClick = () => {
-    //     isOpen ? setIsOpen(false) : setIsOpen(true)
-    // }
-    // const handleLinkClick = () => {
-    //     setIsOpen(false)
-    // }
 
     return (
         <NavigationContainer>

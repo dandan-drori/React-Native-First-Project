@@ -1,25 +1,8 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, ScrollView, Alert, Image } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
 import { Header } from './Typography'
-import LottieView from 'lottie-react-native';
 
 const DefaultPage = ({headerText, bodyText}) => {
-
-    const createAlert = () => {
-        Alert.alert(
-            "Action Successful",
-            "It's gweat",
-            [
-              {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-              },
-              { text: "OK", onPress: () => console.log("OK Pressed") }
-            ],
-            { cancelable: false }
-          );
-    }
 
     return (
         <View style={styles.Page}>
@@ -28,8 +11,8 @@ const DefaultPage = ({headerText, bodyText}) => {
             </View> 
             <ScrollView style={styles.BodyContainer}>
                 <Image source={require('../assets/rediso.jpg')} style={styles.Isometric}/>
-                {/* <LottieView source={require('../assets/services.json')} autoPlay loop style={{height: 250}}/> */}
             </ScrollView>
+            <View style={styles.Circle}></View>
         </View>
     )
 }
@@ -54,6 +37,12 @@ const styles = StyleSheet.create({
     Isometric: {
         height: 300,
         width: '100%'
+    },
+    Circle: {
+        width: 70,
+        height: 70,
+        backgroundColor: '#ff8888',
+        borderRadius: 35
     }
 })
 

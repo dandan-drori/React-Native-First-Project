@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Image, TouchableNativeFeedback } from 'react-native'
 import { Header } from './Typography'
 import StoreItems from './StoreItems'
-import { createStackNavigator } from '@react-navigation/stack';
-import ItemPage from './ItemPage';
+import { createStackNavigator } from '@react-navigation/stack'
+import ItemPage from './ItemPage'
+import ShoppingCart from './ShoppingCart'
 
 const Store = () => {
 
@@ -13,7 +14,7 @@ const Store = () => {
             name: 'Nike Air A365',
             dateCreated: '01.06.2020',
             img: require('../Images/Nike_Air_A365.jpg'),
-            price: '99.99$',
+            price: 99.99,
             stars: 4
         },
         {
@@ -21,7 +22,7 @@ const Store = () => {
             name: 'Nike Air Jordan',
             dateCreated: '31.05.2020',
             img: require('../Images/Nike_Air_Jordan.jpg'),
-            price: '79.99$',
+            price: 79.99,
             stars: 5
         },
         {
@@ -29,7 +30,7 @@ const Store = () => {
             name: 'Nike Air Max 720',
             dateCreated: '01.05.2020',
             img: require('../Images/Nike_Air_Max_720.jpg'),
-            price: '69.99$',
+            price: 69.99,
             stars: 4
         },
         {
@@ -37,7 +38,7 @@ const Store = () => {
             name: 'Nike Air Max',
             dateCreated: '13.05.2020',
             img: require('../Images/Nike_Air_Max.jpg'),
-            price: '89.99$',
+            price: 89.99,
             stars: 3
         },
         {
@@ -45,7 +46,7 @@ const Store = () => {
             name: 'Nike Air Plus',
             dateCreated: '16.05.2020',
             img: require('../Images/Nike_Air_Plus.jpg'),
-            price: '99.99$',
+            price: 99.99,
             stars: 4
         }
     ])
@@ -56,7 +57,7 @@ const Store = () => {
             name: 'Pull & Bear',
             dateCreated: '01.06.2020',
             img: require('../Images/Pull_And_Bear.jpg'),
-            price: '19.99$',
+            price: 19.99,
             stars: 4
         },
         {
@@ -64,7 +65,7 @@ const Store = () => {
             name: 'American Eagle',
             dateCreated: '31.05.2020',
             img: require('../Images/American_Eagle.jpg'),
-            price: '19.99$',
+            price: 19.99,
             stars: 5
         },
         {
@@ -72,7 +73,7 @@ const Store = () => {
             name: 'Billabong',
             dateCreated: '01.05.2020',
             img: require('../Images/Billabong.jpg'),
-            price: '39.99$',
+            price: 39.99,
             stars: 4
         },
         {
@@ -80,7 +81,7 @@ const Store = () => {
             name: 'Fox',
             dateCreated: '13.05.2020',
             img: require('../Images/Fox.jpg'),
-            price: '19.99$',
+            price: 19.99,
             stars: 3
         },
         {
@@ -88,7 +89,7 @@ const Store = () => {
             name: 'S.Wear',
             dateCreated: '16.05.2020',
             img: require('../Images/S_Wear.jpg'),
-            price: '99.99$',
+            price: 99.99,
             stars: 4
         }
     ])
@@ -98,15 +99,16 @@ const Store = () => {
         {backgroundColor: 'transparent'}
     ])
 
-    const [ActiveCategory, setActiveCategory] = useState('Shoes')
+    const [activeCategory, setActiveCategory] = useState('Shoes')
 
     const [cartItems, setCartItems] = useState([])
 
-    const [savedForLater, setSavedForLater] = useState([])
+    const [totalCartPrice, setTotalCartPrice] = useState(0)
 
     const handleShoes = () => {
         setActiveIconContainer([
             {backgroundColor: '#ff6655'},
+            {backgroundColor: 'transparent'},
             {backgroundColor: 'transparent'}
         ])
         setActiveCategory('Shoes')
@@ -115,17 +117,40 @@ const Store = () => {
     const handleShirts = () => {
         setActiveIconContainer([
             {backgroundColor: 'transparent'},
-            {backgroundColor: '#ff6655'}
+            {backgroundColor: '#ff6655'},
+            {backgroundColor: 'transparent'},
         ])
         setActiveCategory('Shirts')
     }
 
-    const addToCart = (item) => {
-        setCartItems(...cartItems, item)
+    const handleShoppingCart = () => {
+        setActiveIconContainer([
+            {backgroundColor: 'transparent'},
+            {backgroundColor: 'transparent'},
+            {backgroundColor: '#ff6655'},
+        ])
+        setActiveCategory('ShoppingCart')
     }
 
-    const saveForLater = (item) => {
-        setSavedForLater(...savedForLater, item)
+    const handleAddToCart = (item) => {  
+        if (cartItems == false) {
+            setCartItems([...cartItems, item])
+            setTotalCartPrice(+(totalCartPrice + item.price).toFixed(2))
+        } else {
+            if (cartItems[0].name === item.name) {
+                null
+                // item.quantity = item.quantity++
+            } else {
+                setCartItems([...cartItems, item])
+                setTotalCartPrice(+(totalCartPrice + item.price).toFixed(2))
+            }
+        }
+    }
+
+    const handleDeleteItem = (item) => {
+        const filteredCart = cartItems.filter(cartItem => cartItem.name!==item.name)
+        setCartItems(filteredCart)
+        setTotalCartPrice(+(totalCartPrice - item.price).toFixed(2))
     }
 
     return (
@@ -145,20 +170,31 @@ const Store = () => {
                             <Image source={require("../Images/Shirt.png")} />
                         </View>
                     </TouchableNativeFeedback>
+                    <TouchableNativeFeedback onPress={handleShoppingCart}>
+                        <View style={{...styles.IconContainer, ...ActiveIconContainer[2]}}>
+                            <Image source={require("../Images/ShoppingCart.png")} />
+                        </View>
+                    </TouchableNativeFeedback>
                 </View>
             </View>
             {
-            ActiveCategory==='Shoes' &&
+            activeCategory==='Shoes' &&
             <View style={{flex: 1}}>
                 <View>
-                    <StoreItems storeItems={storeItemsShoes} addToCart={addToCart} />
+                    <StoreItems storeItems={storeItemsShoes} addToCart={handleAddToCart} />
                 </View>
             </View>
             }
             {
-            ActiveCategory==='Shirts' &&
+            activeCategory==='Shirts' &&
+            <View style={{flex: 1}}>
+                <StoreItems storeItems={storeItemsShirts} addToCart={handleAddToCart} />
+            </View>
+            }
+            {
+            activeCategory==='ShoppingCart' &&
             <View>
-                <StoreItems storeItems={storeItemsShirts} addToCart={addToCart} />
+                <ShoppingCart cartItems={cartItems} deleteItem={handleDeleteItem} totalCartPrice={totalCartPrice}/>
             </View>
             }
         </View>

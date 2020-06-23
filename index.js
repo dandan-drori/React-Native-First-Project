@@ -10,6 +10,8 @@ import { Navigation } from "react-native-navigation";
 
 // AppRegistry.registerComponent(appName, () => Main);
 
+console.disableYellowBox = true
+
 Navigation.registerComponent('com.myApp.WelcomeScreen', () => Main);
 Navigation.events().registerAppLaunchedListener(() => {
    Navigation.setRoot({
