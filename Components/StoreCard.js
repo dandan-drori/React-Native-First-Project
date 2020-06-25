@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Button } from 'react-native-material-ui'
 import { useNavigation } from '@react-navigation/native';
 
-const StoreCard = ({ name, price, image, stars, addToCart }) => {
+const StoreCard = ({ name, price, image, stars, quantity, addToCart }) => {
 
     const navigation = useNavigation();
 
@@ -77,7 +77,7 @@ const StoreCard = ({ name, price, image, stars, addToCart }) => {
                         </Text>
                     </View>
                     }
-                    <Button accent raised text="Buy Now" style={{container: styles.BuyButton}} onPress={() => navigation.navigate('ItemPage', {image: image, name: name, price: price, stars: stars, addToCart: addToCart })} />
+                    <Button accent raised text="Buy Now" style={{container: styles.BuyButton}} onPress={() => navigation.navigate('ItemPage', {image: image, name: name, price: price, stars: stars, quantity: quantity, addToCart: addToCart })} />
                 </View>
             </View>
         </View>
@@ -89,9 +89,10 @@ export default StoreCard
 const styles = StyleSheet.create({
     CardsContainer: {
         width: '100%',
+        flexDirection: 'row',
         marginVertical: 20,
         borderRadius: 50,
-        paddingBottom: 15,
+        paddingRight: 20,
         backgroundColor: '#fff',
         // set shadow for android
         elevation: 5,
@@ -106,18 +107,19 @@ const styles = StyleSheet.create({
     },
     Image: {
         height: 225,
-        width: '100%',
+        width: '50%',
         backgroundColor: 'blue',
         borderRadius: 50
     },
     TextSection: {
-        padding: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        paddingLeft: 20,
+        paddingTop: 20,
+        alignItems: 'center',
     },
     Text: {
         fontSize: 20,
-        marginVertical: 15
+        marginVertical: 10,
+        textAlign: 'center',
     },
     StarsContainer: {
         justifyContent: 'space-around'
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
     BuyButton: {
         position: 'relative',
         top: 4,
+        marginTop: 15,
         backgroundColor: '#ff6655',
     },
 })

@@ -15,7 +15,8 @@ const Store = () => {
             dateCreated: '01.06.2020',
             img: require('../Images/Nike_Air_A365.jpg'),
             price: 99.99,
-            stars: 4
+            stars: 4,
+            quantity: 1
         },
         {
             key: 2,
@@ -23,7 +24,8 @@ const Store = () => {
             dateCreated: '31.05.2020',
             img: require('../Images/Nike_Air_Jordan.jpg'),
             price: 79.99,
-            stars: 5
+            stars: 5,
+            quantity: 1
         },
         {
             key: 3,
@@ -31,7 +33,8 @@ const Store = () => {
             dateCreated: '01.05.2020',
             img: require('../Images/Nike_Air_Max_720.jpg'),
             price: 69.99,
-            stars: 4
+            stars: 4,
+            quantity: 1
         },
         {
             key: 4,
@@ -39,7 +42,8 @@ const Store = () => {
             dateCreated: '13.05.2020',
             img: require('../Images/Nike_Air_Max.jpg'),
             price: 89.99,
-            stars: 3
+            stars: 3,
+            quantity: 1
         },
         {
             key: 5,
@@ -47,7 +51,8 @@ const Store = () => {
             dateCreated: '16.05.2020',
             img: require('../Images/Nike_Air_Plus.jpg'),
             price: 99.99,
-            stars: 4
+            stars: 4,
+            quantity: 1
         }
     ])
 
@@ -58,7 +63,8 @@ const Store = () => {
             dateCreated: '01.06.2020',
             img: require('../Images/Pull_And_Bear.jpg'),
             price: 19.99,
-            stars: 4
+            stars: 4,
+            quantity: 1
         },
         {
             key: 2,
@@ -66,7 +72,8 @@ const Store = () => {
             dateCreated: '31.05.2020',
             img: require('../Images/American_Eagle.jpg'),
             price: 19.99,
-            stars: 5
+            stars: 5,
+            quantity: 1
         },
         {
             key: 3,
@@ -74,7 +81,8 @@ const Store = () => {
             dateCreated: '01.05.2020',
             img: require('../Images/Billabong.jpg'),
             price: 39.99,
-            stars: 4
+            stars: 4,
+            quantity: 1
         },
         {
             key: 4,
@@ -82,7 +90,8 @@ const Store = () => {
             dateCreated: '13.05.2020',
             img: require('../Images/Fox.jpg'),
             price: 19.99,
-            stars: 3
+            stars: 3,
+            quantity: 1
         },
         {
             key: 5,
@@ -90,7 +99,8 @@ const Store = () => {
             dateCreated: '16.05.2020',
             img: require('../Images/S_Wear.jpg'),
             price: 99.99,
-            stars: 4
+            stars: 4,
+            quantity: 1
         }
     ])
 
@@ -132,22 +142,51 @@ const Store = () => {
         setActiveCategory('ShoppingCart')
     }
 
-    const handleAddToCart = (item) => {  
-        if (cartItems == false) {
-            setCartItems([...cartItems, item])
-            setTotalCartPrice(+(totalCartPrice + item.price).toFixed(2))
+    const handleAddQuantity = (item, index) => {
+        setCartItems(prevState => {
+            prevState[index].quantity = prevState[index].quantity + 1;
+            return ([...prevState])
+        })
+        setTotalCartPrice(prevState => {
+            prevState = prevState + item.price
+            return (+prevState.toFixed(2))
+        })
+    }   
+
+    const handleSubtractQuantity = (item, index) => {
+        if (cartItems[index].quantity > 1) {
+            setCartItems(prevState => {
+                prevState[index].quantity = prevState[index].quantity - 1;
+                return ([...prevState])
+            })
+            setTotalCartPrice(prevState => {
+                prevState = prevState - item.price
+                return (+prevState.toFixed(2))
+            })
         } else {
-            if (cartItems[0].name === item.name) {
-                null
-                // item.quantity = item.quantity++
-            } else {
-                setCartItems([...cartItems, item])
-                setTotalCartPrice(+(totalCartPrice + item.price).toFixed(2))
-            }
+            handleDeleteItem(item)
         }
     }
 
+    const handleAddToCart = (item, index) => {  
+        const Check = cartItems.some(cartItem => item.name === cartItem.name)
+        if (Check) {
+            handleAddQuantity(item, index)
+            // cartItems.some(cartItem => {
+            //     cartItem.quantity = cartItem.quantity+1
+            //     cartItem.price = +(cartItem.price + item.price).toFixed(2)
+            // })
+        } else {
+            setCartItems([...cartItems, item])
+        }  
+        setTotalCartPrice(+(totalCartPrice + item.price).toFixed(2))
+    }
+
     const handleDeleteItem = (item) => {
+        setTotalCartPrice(+(totalCartPrice - item.price).toFixed(2))
+        cartItems.some(cartItem => {if (cartItem.name === item.name) {
+            cartItem.price = +(cartItem.price - item.price).toFixed(2)
+        }})
         const filteredCart = cartItems.filter(cartItem => cartItem.name!==item.name)
         setCartItems(filteredCart)
         setTotalCartPrice(+(totalCartPrice - item.price).toFixed(2))
@@ -194,7 +233,7 @@ const Store = () => {
             {
             activeCategory==='ShoppingCart' &&
             <View>
-                <ShoppingCart cartItems={cartItems} deleteItem={handleDeleteItem} totalCartPrice={totalCartPrice}/>
+                <ShoppingCart cartItems={cartItems} deleteItem={handleDeleteItem} totalCartPrice={totalCartPrice} addQuantity={handleAddQuantity} subtractQuantity={handleSubtractQuantity}/>
             </View>
             }
         </View>

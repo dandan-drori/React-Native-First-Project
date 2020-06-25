@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react'
-import { StyleSheet, Text, View, Image, List, ListItem, FlatList, Modal, Animated, Easing, Alert } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, Modal } from 'react-native'
 import { Button } from 'react-native-material-ui'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { TouchableOpacity, TouchableHighlight } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import Dialog from "react-native-dialog";
 import LottieView from 'lottie-react-native';
 
@@ -12,6 +12,7 @@ const ItemPage = ( { route } ) => {
     const { name } = route.params
     const { price } = route.params
     const { stars } = route.params
+    const { quantity } = route.params
     const { addToCart } = route.params
 
     const [isDialogVisible, setIsDialogVisible] = useState(false)
@@ -30,8 +31,8 @@ const ItemPage = ( { route } ) => {
 
     const [isClickedTwice, setIsClickedTwice] = useState(false)
 
-    const handleAddToCart = (item) => {
-        if (!isClickedTwice) {
+    const handleAddToCart = (item) => {   
+        if (isClickedTwice === false) { 
             addToCart(item)
             //handle Modal animation
             setPageStylesModalOpen({opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.8)'})
@@ -41,19 +42,11 @@ const ItemPage = ( { route } ) => {
                 setIsModalVisible(false)
                 setPageStylesModalOpen({opacity: 1, backgroundColor: '#eee'})
                 setTopSectionBackground({backgroundColor: '#ff6655'})
-            }, 1292)
+            }, 1200)
             setIsClickedTwice(true)
         } else {
-            Alert.alert(
-                "Limit Reached!",
-                "You can't purchase the same item more than once.",
-                [
-                  { text: "OK", onPress: () => {} }
-                ],
-                { cancelable: true }
-              );
-          
-        }
+            alert("You can change an item's quantity only from your Shopping Cart")
+        }  
     }
 
     return (
@@ -68,7 +61,7 @@ const ItemPage = ( { route } ) => {
                     </View>
                     <View style={styles.TextStarsContainer}>
                         <Text style={styles.PriceText}>{`${price}$`}</Text>
-                        <View>
+                    <View>
                             {
                     stars===1 &&
                     <View style={styles.StarsContainer}>
@@ -142,7 +135,7 @@ const ItemPage = ( { route } ) => {
                 </View>
             </View>
             <View style={styles.Actions}>
-                <Button accent={!isModalVisible} raised text="Add To Cart" icon='shopping-cart' onPress={() => handleAddToCart({name: name, image: image, price: price})} style={styles.AddToCart}/>
+                <Button accent={!isModalVisible} raised text="Add To Cart" icon='shopping-cart' onPress={() => handleAddToCart({name: name, image: image, price: price, quantity: quantity})} style={styles.AddToCart}/>
             </View>
             <View>
         <Dialog.Container visible={isDialogVisible}>

@@ -2,15 +2,25 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
 import { Button } from 'react-native-material-ui'
 
-const ShoppingCart = ({ cartItems, deleteItem, totalCartPrice }) => {
+const ShoppingCart = ({ cartItems, deleteItem, totalCartPrice, subtractQuantity, addQuantity }) => {
+
+    const [scaleDown, setScaleDown] = useState(1)
 
     const handleDelete = (item) => {
         deleteItem(item)
     }
 
-    const render = cartItems.map(item => {
+    const handleAddQuantity = (item, index) => {
+        addQuantity(item, index)
+    }
+
+    const handleSubtractQuantity = (item, index) => {
+        subtractQuantity(item, index)
+    }
+
+    const render = cartItems.map((item, index) => {
         return (
-        <View style={styles.ShoppingCartItem} key={item.name}>
+        <View style={{...styles.ShoppingCartItem, transform: [{scale: scaleDown}]}} key={index}>
             <Image source={item.image} style={styles.Image}/>
             <View style={styles.ContentWrapper}>
                 <View style={styles.TextWrapper}>
@@ -20,9 +30,13 @@ const ShoppingCart = ({ cartItems, deleteItem, totalCartPrice }) => {
                     <Text style={styles.ShoppingCartItemPrice}>
                     {item.price+'$'}
                     </Text>
-                    {/* <Text>
-                        {"Quantity: "+item.quantity}
-                    </Text> */}
+                    <View style={styles.QuantityContainer}>
+                        <Button primary raised text="-" onPress={() => {handleSubtractQuantity({name: item.name, price: item.price}, index)}}/>
+                        <Text>
+                            {`Quantity: ${item.quantity}`}
+                        </Text>
+                        <Button primary raised text="+" onPress={() => {handleAddQuantity({name: item.name, price: item.price, quantity: item.quantity}, index)}}/>
+                    </View>
                 </View>
                 <View style={styles.Actions}>
                     <Button accent raised text="" icon='delete' onPress={() => handleDelete({name: item.name, price: item.price})}/>
@@ -114,4 +128,8 @@ const styles = StyleSheet.create({
     TotalPriceText: {
         fontSize: 20
     },
+    QuantityContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 })
