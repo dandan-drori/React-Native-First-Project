@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { Header } from './Typography'
 import BotMessage from './BotMessage'
 import UserButtons from './UserButtons'

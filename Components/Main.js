@@ -1,6 +1,7 @@
 import React from 'react'
 import Home from './Home'
-import ChatBot from './ChatBot'
+// import ChatBot from './ChatBot'
+import BookManager from './BookManager'
 import { StoreStackScreen } from './Store'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -37,7 +38,7 @@ const Main = () => {
                   }}
                   >
                 <Tab.Screen name="Home" component={Home} />
-                <Tab.Screen name="Chat-Bot" component={ChatBot} />
+                <Tab.Screen name="Chat-Bot" component={BookManager} />
                 <Tab.Screen name="Store" component={StoreStackScreen} />
             </Tab.Navigator>        
         </NavigationContainer>

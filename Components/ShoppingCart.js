@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
 import { Button } from 'react-native-material-ui'
 

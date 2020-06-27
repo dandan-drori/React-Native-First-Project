@@ -29,24 +29,17 @@ const ItemPage = ( { route } ) => {
 
     const [topSectionBackground, setTopSectionBackground] = useState({backgroundColor: '#ff6655'})
 
-    const [isClickedTwice, setIsClickedTwice] = useState(false)
-
     const handleAddToCart = (item) => {   
-        if (isClickedTwice === false) { 
-            addToCart(item)
-            //handle Modal animation
-            setPageStylesModalOpen({opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.8)'})
-            setTopSectionBackground({backgroundColor: '#555'})
-            setIsModalVisible(true)
-            setTimeout(() => {
-                setIsModalVisible(false)
-                setPageStylesModalOpen({opacity: 1, backgroundColor: '#eee'})
-                setTopSectionBackground({backgroundColor: '#ff6655'})
-            }, 1200)
-            setIsClickedTwice(true)
-        } else {
-            alert("You can change an item's quantity only from your Shopping Cart")
-        }  
+        addToCart(item)
+        //handle Modal animation
+        setPageStylesModalOpen({opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.8)'})
+        setTopSectionBackground({backgroundColor: '#555'})
+        setIsModalVisible(true)
+        setTimeout(() => {
+            setIsModalVisible(false)
+            setPageStylesModalOpen({opacity: 1, backgroundColor: '#eee'})
+            setTopSectionBackground({backgroundColor: '#ff6655'})
+        }, 1200)
     }
 
     return (

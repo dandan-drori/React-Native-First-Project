@@ -9,6 +9,14 @@ export const Header = ({ headerText }) => {
     )
 }
 
+export const SubHeader = ({ subHeaderText }) => {
+    return (
+        <View style={styles.SubHeaderContainer}>
+            <Text style={styles.SubHeaderText}>{subHeaderText}</Text>
+        </View>
+    )
+}
+
 export default Header
 
 const styles = StyleSheet.create({
@@ -19,5 +27,13 @@ const styles = StyleSheet.create({
     Text: {
         fontSize: 50,
         fontWeight: '500',
-    }
+    },
+    SubHeaderContainer: {
+        margin: 10,
+        padding: 0
+    },
+    SubHeaderText: {
+        fontSize: 30,
+        fontWeight: '300'
+    },
 })

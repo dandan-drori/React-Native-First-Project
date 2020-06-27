@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, ScrollView, Image, TouchableNativeFeedback } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, View, Image, TouchableNativeFeedback } from 'react-native'
 import { Header } from './Typography'
 import StoreItems from './StoreItems'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -168,28 +168,31 @@ const Store = () => {
         }
     }
 
-    const handleAddToCart = (item, index) => {  
-        const Check = cartItems.some(cartItem => item.name === cartItem.name)
-        if (Check) {
-            handleAddQuantity(item, index)
-            // cartItems.some(cartItem => {
-            //     cartItem.quantity = cartItem.quantity+1
-            //     cartItem.price = +(cartItem.price + item.price).toFixed(2)
-            // })
+    const handleAddToCart = (item) => {  
+        const isItemInCart = cartItems.some(cartItem => item.name === cartItem.name)
+        if (isItemInCart) {
+            null
         } else {
             setCartItems([...cartItems, item])
         }  
         setTotalCartPrice(+(totalCartPrice + item.price).toFixed(2))
+        setCartItems(prevState => {
+            cartItems.forEach((cartItem, index) => {
+                if (item.name === prevState[index].name) {
+                    prevState[index].quantity = prevState[index].quantity + 1
+                }
+            })
+            return [...prevState]
+        })
     }
 
     const handleDeleteItem = (item) => {
-        setTotalCartPrice(+(totalCartPrice - item.price).toFixed(2))
-        cartItems.some(cartItem => {if (cartItem.name === item.name) {
-            cartItem.price = +(cartItem.price - item.price).toFixed(2)
+        cartItems.some(cartItem => {
+            if (cartItem.name === item.name) {
+                setTotalCartPrice(+(totalCartPrice - (item.price*cartItem.quantity)).toFixed(2))
         }})
         const filteredCart = cartItems.filter(cartItem => cartItem.name!==item.name)
         setCartItems(filteredCart)
-        setTotalCartPrice(+(totalCartPrice - item.price).toFixed(2))
     }
 
     return (
