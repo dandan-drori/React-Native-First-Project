@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
 import { Button } from 'react-native-elements'
 
@@ -11,20 +11,13 @@ const BooksFilter = ({ handleSubmit, value, setValue, handleOnChangeText }) => {
         handleOnChangeText(text)
     }
 
-    const setFocusedStyles = () => {
-           
-    }
-
     return (
         <View style={styles.FilterContainer}>
             <TextInput 
-                onFocus={() => setFocusedStyles} 
                 value={value} 
                 onChangeText={(text) => onChangeText(text)} 
-                onKeyPress={({ nativeEvent }) => { nativeEvent.key === 'Backspace' ? null : null}} 
                 autoCapitalize="words" 
-                inlineImageLeft="image"
-                placeholder="Search Books"
+                placeholder="Search Books..."
                 style={styles.Input}
             />
             <Button
@@ -47,6 +40,7 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         borderWidth: 1,
         width: 265,
-        marginBottom: 20
+        marginBottom: 20,
+        borderRadius: 5
     }
 })

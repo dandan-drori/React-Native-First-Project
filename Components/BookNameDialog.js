@@ -1,28 +1,48 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Dialog from 'react-native-dialog'
 
-const BookNameDialog = ({ isBookNameInputVisible, setIsBookNameInputVisible, bookNameInputValue, setBookNameInputValue, setIsBookRatingInputVisible }) => {
+const BookNameDialog = ({ isBookNameInputVisible, setIsBookNameInputVisible, bookNameInputValue, setBookNameInputValue, setIsBookAuthorInputVisible, isAddBookDialog, isEditBookNameInputVisible, setEditBookNameInputValue, editBookNameInputValue, setIsEditBookNameInputVisible, setIsEditBookAuthorInputVisible, setIsAddBookDialog }) => {
     return (
+        // if add book is true - display add book dialog, else - display edit book dialog
         <View>
-            <Dialog.Container visible={isBookNameInputVisible}>
-                <Dialog.Title>Add A New Book</Dialog.Title>
+            <Dialog.Container visible={isAddBookDialog ? isBookNameInputVisible : isEditBookNameInputVisible}>
+                <Dialog.Title>{isAddBookDialog ? 'Add A New Book' : 'Edit Book'}</Dialog.Title>
                 <Dialog.Description>Book Name:</Dialog.Description>
                 <Dialog.Input 
-                    onChangeText={text => {setBookNameInputValue(text)}} 
-                    value={bookNameInputValue} 
+                    onChangeText={text => {isAddBookDialog ? setBookNameInputValue(text) : setEditBookNameInputValue(text)}} 
+                    value={isAddBookDialog ? bookNameInputValue : editBookNameInputValue} 
                     wrapperStyle={styles.BookNameInputWrapper} 
                     autoFocus 
+                    autoCapitalize="words"
                 />
-                <Dialog.Button label="Cancel" onPress={() => {setIsBookNameInputVisible(false)}}/>
-                <Dialog.Button label="Next" onPress={() => {
-                    setIsBookNameInputVisible(false)
-                    if (bookNameInputValue === '') {
-                        alert('Name field cannot be left empty!')
-                    } else if (bookNameInputValue.length > 30) {
-                        alert('Name cannot exceed 30 characters!')
+                <Dialog.Button label="Cancel" onPress={() => {
+                    if (isAddBookDialog) {
+                        setIsBookNameInputVisible(false) 
                     } else {
-                        setIsBookRatingInputVisible(true)
+                        setIsEditBookNameInputVisible(false)
+                        setIsAddBookDialog(true)
+                    }
+                }}/>
+                <Dialog.Button label="Next" onPress={() => {
+                    if (isAddBookDialog) {
+                        if (bookNameInputValue === '') {
+                            alert('Name field cannot be left empty!')
+                        } else if (bookNameInputValue.length > 60) {
+                            alert('Name cannot exceed 60 characters!')
+                        } else {
+                            setIsBookNameInputVisible(false)
+                            setIsBookAuthorInputVisible(true)
+                        }
+                    } else {
+                        if (editBookNameInputValue === '') {
+                            alert('Name field cannot be left empty!')
+                        } else if (editBookNameInputValue.length > 60) {
+                            alert('Name cannot exceed 60 characters!')
+                        } else {
+                            setIsEditBookNameInputVisible(false)
+                            setIsEditBookAuthorInputVisible(true)
+                        }
                     }
                 }}/>
             </Dialog.Container>

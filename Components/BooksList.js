@@ -1,28 +1,26 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { View, FlatList } from 'react-native'
 import BookItem from './BookItem'
 
-const BooksList = ({ books, deleteBook, editBook }) => {
-
+const BooksList = ({ books, deleteBook, editBook, setIsAddBookDialog }) => {
     return (
         <View>
-            <FlatList 
-                data={books} 
-                renderItem={ ({ item }) => 
-                    <BookItem 
-                        name={item.name} 
-                        rating={item.rating} 
+            <FlatList
+                data={books}
+                keyExtractor={book => book.id} 
+                renderItem={({ item }) => 
+                    <BookItem
+                        name={item.name}
+                        rating={item.rating}
+                        author={item.author}
                         deleteBook={deleteBook}
-                        editBook={editBook}
-                    /> 
+                        editBook={editBook} 
+                        setIsAddBookDialog={setIsAddBookDialog}
+                    />
                 }
-                keyExtractor={book => book.id}
             />
         </View>
     )
 }
 
 export default BooksList
-
-const styles = StyleSheet.create({})

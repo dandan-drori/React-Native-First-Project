@@ -4,13 +4,18 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { Button } from 'react-native-elements';
 
-const BookItem = ( { name, rating, deleteBook, editBook } ) => {
+const BookItem = ( { name, rating, deleteBook, editBook, setIsAddBookDialog, author } ) => {
 
     return (
         <View style={styles.BookItemContainer}>
-            <Text style={styles.BookItemName}>
-                {name}
-            </Text>
+            <View>
+                <Text style={styles.BookItemName}>
+                    {name}
+                </Text>
+                <Text style={styles.BookItemAuthor}>
+                    {author}
+                </Text>
+            </View>    
             <View style={{flexDirection: 'row'}}>
                 <Text style={styles.BookItemRating}>
                     {rating}
@@ -19,11 +24,18 @@ const BookItem = ( { name, rating, deleteBook, editBook } ) => {
                     <Icon size={20} name="star" color="#F9C72D" />
                 </Text>
             </View>
-            <Button title="" icon={ <Icon size={20} name="pencil" color="#baff83" /> }/>
+            <Button 
+                title="" 
+                icon={ <Icon size={20} name="pencil" color="#baff83" /> }
+                onPress={() => { 
+                    setIsAddBookDialog(false)
+                    editBook(name, author, rating) 
+                }}
+            />
             <Button 
                 title="" 
                 icon={ <MaterialIcon size={20} name="delete" color="#ff0000" /> }
-                onPress={() => {deleteBook(name)}}
+                onPress={() => { deleteBook(name) }}
             />
         </View>
     )
@@ -46,9 +58,14 @@ const styles = StyleSheet.create({
         elevation: 4
     },
     BookItemName: {
-        fontSize: 20
+        fontSize: 20,
+        maxWidth: 130,
     },
     BookItemRating: {
-        fontSize: 20
+        fontSize: 20,
+    },
+    BookItemAuthor: {
+        fontSize: 16,
+        maxWidth: 130,
     }
 })
