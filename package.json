@@ -19,7 +19,7 @@
     "@react-navigation/stack": "^5.5.1",
     "@types/node": "^14.0.12",
     "jetifier": "^1.6.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lottie-react-native": "^3.4.0",
     "react": "16.11.0",
     "react-lodash": "^0.1.2",
